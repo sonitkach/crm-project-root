@@ -1,11 +1,23 @@
 from rest_framework import serializers
 
-from .models import Company, Speciality, Employee
+from .models import Company, Speciality, Employee, Friendship
+
 
 class CompanySerializer(serializers.ModelSerializer):
+    friends = serializers.StringRelatedField(many=True)
+
     class Meta:
         model = Company
-        fields = ('name',)
+        fields = ('name', 'friends',)
+
+class FriendshipSerializer(serializers.ModelSerializer):
+    #sender = serializers.StringRelatedField()
+    #receiver = serializers.StringRelatedField()
+
+    class Meta:
+        model = Friendship
+        fields = "__all__"
+
 
 
 class SpecialitySerializer(serializers.ModelSerializer):

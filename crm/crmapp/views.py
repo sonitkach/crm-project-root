@@ -1,6 +1,6 @@
 from rest_framework import viewsets, generics, mixins
-from .models import Company, Speciality, Employee
-from .serializers import CompanySerializer, SpecialitySerializer, EmployeeSerializer
+from .models import Company, Speciality, Employee, Friendship
+from .serializers import CompanySerializer, SpecialitySerializer, EmployeeSerializer, FriendshipSerializer
 from django_filters import rest_framework as filters
 
 class CompanyListView(viewsets.GenericViewSet,
@@ -15,6 +15,17 @@ class CompanyListView(viewsets.GenericViewSet,
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
 
+class FriendshipView(viewsets.GenericViewSet,
+                     viewsets.mixins.ListModelMixin,
+                     viewsets.mixins.CreateModelMixin,
+                     viewsets.mixins.RetrieveModelMixin,
+                     viewsets.mixins.UpdateModelMixin,
+                     viewsets.mixins.DestroyModelMixin):
+    queryset = Friendship.objects.all()
+    serializer_class = FriendshipSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
 
 class SpecialityListView(viewsets.GenericViewSet,
                   viewsets.mixins.ListModelMixin,

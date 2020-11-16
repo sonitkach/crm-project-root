@@ -3,13 +3,26 @@ from django.db import models
 
 class Company(models.Model):
     name = models.CharField(max_length=100)
+    friends = models.ManyToManyField('self', symmetrical=True,
+                                     through='Friendship', through_fields=('sender', 'receiver',))
 
     def __str__(self):
         return self.name
 
-    def __repr__(self):
-        add = self.name or '[no name]'
-        return f'<Company "{add}">'
+class Friendship(models.Model):
+    '''REQUESTED = 'REQUESTED'
+    ACCEPTED = 'ACCEPTED'
+    REJECTED = 'REJECTED'
+
+    STATUS_CHOICES = (
+        (REQUESTED, 'requested'),
+        (ACCEPTED, 'accepted'),
+        (REJECTED, 'rejected'),
+    )
+
+    status = models.TextField(choices=STATUS_CHOICES, default=REQUESTED)'''
+    sender = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='sender')
+    receiver = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='receiver')
 
 
 class Speciality(models.Model):

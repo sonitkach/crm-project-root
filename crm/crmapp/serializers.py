@@ -10,14 +10,18 @@ class CompanySerializer(serializers.ModelSerializer):
         model = Company
         fields = ('name', 'friends',)
 
+
 class FriendshipSerializer(serializers.ModelSerializer):
-    #sender = serializers.StringRelatedField()
-    #receiver = serializers.StringRelatedField()
 
     class Meta:
         model = Friendship
-        fields = "__all__"
+        fields = ('sender', 'receiver',)
 
+    def to_representation(self, instance):
+        response = super().to_representation(instance)
+        response['sender'] = CompanySerializer(instance.sender).data
+        response['receiver'] = CompanySerializer(instance.receiver).data
+        return response
 
 
 class SpecialitySerializer(serializers.ModelSerializer):
